@@ -26,6 +26,7 @@ pygame.display.set_caption("Паровозик Пиара")
 clock = pygame.time.Clock()
 
 # Переменные игры
+rail_speed = 5  # Определяем скорость рельсов и реки
 train_width = 100  # Ширина поезда
 train_height = 50  # Высота поезда (добавляем эту переменную)
 train_img = pygame.Surface((train_width, train_height))  # Временное изображение поезда
@@ -99,13 +100,14 @@ class Rail:
 # Создание объекта Rail
 rail = Rail(800, 5, 5, 120, 10)
 
-# Параметры рек
+# Параметры реки
 river_width = 200  # Ширина реки, примерно в два паровозика
 river_height = 50  # Высота реки
 river_x = 500  # Начальная позиция реки
-river_y = SCREEN_HEIGHT - 150  # Река будет на уровне земли
-river_visible_1 = False  # Первая река
-river_visible_2 = False  # Вторая река
+
+# Устанавливаем реку на уровень рельса, сдвигаем вниз на высоту самой реки
+river_y = rail.rail_base_y  # Верхний край реки на уровне рельса
+
 
 # Главный игровой цикл
 start_time = time.time()  # Засекаем время начала игры
@@ -115,6 +117,13 @@ while running:
         if event.type == pygame.QUIT:
             pygame.quit()  # Корректно закрываем Pygame
             sys.exit()  # Полностью выходим из программы
+
+    # Обновляем положение реки
+    river_x -= rail_speed  # Река движется с той же скоростью, что и рельс
+
+    # Когда река выходит за пределы экрана, возвращаем ее в начало
+    if river_x + river_width < 0:
+        river_x = SCREEN_WIDTH  # Возвращаем реку в начало экрана
 
     # Управление прыжком
     keys = pygame.key.get_pressed()
@@ -133,32 +142,37 @@ while running:
 
     # Проверка столкновения с рекой
     if (train_x + train_width > river_x and train_x < river_x + river_width) and (train_y + train_height >= river_y):
-        if not is_jumping:
-            print("Вы упали в реку! Игра завершена.")
-            pygame.quit()
-            sys.exit()  # Завершаем игру
+        print("Вы упали в реку! Игра завершена.")
+
+        # Заставка с черным экраном на 0,5 секунды перед перезапуском
+        screen.fill(BLACK)  # Черный экран
+        pygame.display.update()
+        pygame.time.delay(1000)  # Задержка 0,5 секунды
+
+        # Перезапуск игры
+        train_x = 100
+        train_y = SCREEN_HEIGHT - 150
+        is_jumping = False
+        velocity_y = 0
+        river_x = 500  # Начальная позиция реки
+        river_visible_1 = False
+        river_visible_2 = False
+        start_time = time.time()  # Засекаем время начала игры
 
     # Обновление состояния рельсов и шпал
     rail.update()
 
-    # Проверяем время, чтобы добавить реку
-    elapsed_time = time.time() - start_time
-    if elapsed_time > 2 and not river_visible_1:
-        river_visible_1 = True  # Появление первой реки через 2 секунды
-    if elapsed_time > 4 and not river_visible_2:
-        river_visible_2 = True  # Появление второй реки через 4 секунды
-
     # Отрисовка всего
     screen.fill(WHITE)  # Очищаем экран
+
+    #
+
 
     # Рисуем рельсы и шпалы
     rail.draw(screen)
 
     # Рисуем реку
-    if river_visible_1:
-        pygame.draw.rect(screen, BLUE, pygame.Rect(river_x, river_y, river_width, river_height))  # Первая река
-    if river_visible_2:
-        pygame.draw.rect(screen, BLUE, pygame.Rect(river_x + 400, river_y, river_width, river_height))  # Вторая река
+    pygame.draw.rect(screen, BLUE, pygame.Rect(river_x, river_y, river_width, river_height))  # Река теперь не двигается
 
     # Рисуем поезд
     screen.blit(train_img, (train_x, train_y))  # Рисуем поезд
@@ -169,3 +183,4 @@ while running:
 
 pygame.quit()  # Завершаем Pygame
 sys.exit()  # Выход из программы
+
