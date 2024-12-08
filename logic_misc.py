@@ -38,7 +38,7 @@ velocity_y = 0
 jump_height = -15  # Высота прыжка
 gravity = 0.6  # Гравитация
 
-
+# Класс Rail, объединяющий рельсы и шпалы
 class Rail:
     def __init__(self, rail_length, rail_height, rail_speed, spike_angle, spike_length):
         self.rail_length = rail_length
@@ -99,8 +99,6 @@ class Rail:
 # Создание объекта Rail
 rail = Rail(800, 5, 5, 120, 10)
 
-
-
 # Параметры рек
 river_width = 200  # Ширина реки, примерно в два паровозика
 river_height = 50  # Высота реки
@@ -132,6 +130,13 @@ while running:
             train_y = ground_y  # Останавливаем поезд на земле
             is_jumping = False  # Поезд больше не в прыжке
             velocity_y = 0  # Останавливаем вертикальную скорость
+
+    # Проверка столкновения с рекой
+    if (train_x + train_width > river_x and train_x < river_x + river_width) and (train_y + train_height >= river_y):
+        if not is_jumping:
+            print("Вы упали в реку! Игра завершена.")
+            pygame.quit()
+            sys.exit()  # Завершаем игру
 
     # Обновление состояния рельсов и шпал
     rail.update()
