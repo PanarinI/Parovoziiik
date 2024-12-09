@@ -25,6 +25,7 @@ gravity = 1
 jump_strength = -30
 is_jumping = False
 
+
 # Параметры препятствий
 obstacle_width, obstacle_height = 40, 80
 obstacle_x = WIDTH
@@ -42,6 +43,8 @@ unit_spawn_interval = 100  # Интервал появления юнитов (�
 score = 0
 
 # Хвост героя
+interactions_count = 0
+
 tail = []  # Список полосок хвоста
 tail_width = hero_width // 2  # Половина ширины героя
 tail_color = BLUE
@@ -95,14 +98,16 @@ while running:
         unit["x"] -= obstacle_speed  # Двигаем юниты влево
         unit_rect = pygame.Rect(unit["x"], unit["y"], unit_size, unit_size)
         if hero_rect.colliderect(unit_rect):
-            if unit["type"] == "A":  # Красный юнит (утяжеляет и добавляет полоску)
-                jump_strength += 1  # Уменьшаем высоту прыжка
+            interactions_count += 1  # Увеличиваем счётчик взаимодействий
+            if interactions_count in [1, 3, 5] and len(tail) < 3:  # Проверка на добавление полоски
                 tail.append({"x": hero_x - len(tail) * tail_width, "y": hero_y})
-            elif unit["type"] == "B":  # Зелёный юнит (даёт очки)
-                score += 2
 
-             # В обоих случаях добавляем полоску
-             tail.append({"x": hero_x - len(tail) * tail_width, "y": hero_y})
+            # Обработка типов юнитов
+            if unit["type"] == "A":
+                jump_strength += 1  # Уменьшаем силу прыжка
+            elif unit["type"] == "B":
+                score += 2  # Увеличиваем очки
+
         else:
             if unit["x"] > -unit_size:  # Оставляем юнит, если он не ушёл за экран
                 new_units.append(unit)
@@ -138,6 +143,9 @@ while running:
     font = pygame.font.Font(None, 36)
     text = font.render(f"Score: {score}", True, BLACK)
     screen.blit(text, (10, 10))
+    # Отображение счётчика взаимодействий
+    interaction_text = font.render(f"Interactions: {interactions_count}", True, BLACK)
+    screen.blit(interaction_text, (10, 50))  # Отображение чуть ниже очков
 
     # Обновление экрана
     pygame.display.flip()
