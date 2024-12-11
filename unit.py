@@ -53,10 +53,10 @@ class Unit:
         if len(units) < max_units:
             unit_x = random.randint(*spawn_x_range)
             unit_y = ground_y - unit_size
-            # Вероятности появления типов
             unit_type = random.choices(
                 ["A", "B", "silent"],  # Профессионал, тупорез, молчаливый
-                weights=[0.3, 0.5, 0.2],  # Вероятности 30%, 50%, 20%
+                weights=[0.3, 0.5, 0.2],  # Вероятности появления
                 k=1
             )[0]
             units.append(Unit(unit_x, unit_y, unit_size, unit_type))
+

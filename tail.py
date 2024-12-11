@@ -12,13 +12,14 @@ class Tail:
         if len(self.wagons) < self.max_wagons:
             self.wagons.append([])  # Добавляем новый пустой вагон
 
-    def add_unit_to_wagon(self, unit_image):
+    def add_unit_to_wagon(self, unit):
         for wagon in self.wagons:
             if len(wagon) < 2:  # Если в вагоне меньше 2 юнитов
-                wagon.append({"image": unit_image, "rect": None})  # Добавляем словарь с Surface и Rect
+                wagon.append(unit)
                 return
 
         # Если все вагоны заполнены, ничего не делаем
+
     def update(self, hero_rect):
         for i, wagon in enumerate(self.wagons):
             wagon_x = hero_rect.right + (i + 1) * (self.hero_width + self.spacing)
@@ -30,6 +31,7 @@ class Tail:
                     self.hero_width // 2,
                     self.hero_height // 2
                 )
+
     def draw(self, screen, hero_rect):
         for i, wagon in enumerate(self.wagons):
             wagon_x = hero_rect.right + (i + 1) * (self.hero_width + self.spacing)
@@ -42,6 +44,4 @@ class Tail:
             for unit in wagon:
                 if unit['image'] and unit['rect']:
                     screen.blit(unit['image'], unit['rect'])
-
-
 
