@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="91283673-61f8-42ca-b6d4-f9c9f453cdbb" name="Changes" comment="Initial commit">
+      <change afterPath="$PROJECT_DIR$/Knowledge base/main aim.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Knowledge base/phases.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unit.py" beforeDir="false" afterPath="$PROJECT_DIR$/unit.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +41,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "textual__concept",
+    "git-widget-placeholder": "textual",
     "settings.editor.selected.configurable": "vcs.Git"
   }
 }]]></component>
