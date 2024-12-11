@@ -1,3 +1,5 @@
+import pygame
+
 class InputHandler:
     @staticmethod
     def handle_input(hero):
