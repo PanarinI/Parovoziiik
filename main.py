@@ -82,6 +82,7 @@ while running:
     # Обработка взаимодействий с юнитами
     for unit in units[:]:
         unit.update(5)
+        unit.draw(screen)  # Отображение юнита и его текста
         if hero.rect.colliderect(unit.rect):
             interaction_count += 1
 
